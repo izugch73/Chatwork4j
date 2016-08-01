@@ -1,5 +1,5 @@
 # Chatwork4j
-This is description! haha :)
+A Chatwork4j is Chatwork wrapper for Java.
 
 # Required Libraries
 + Jackson-core (2.8.x higher)
