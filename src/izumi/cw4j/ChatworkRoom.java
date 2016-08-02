@@ -1,11 +1,16 @@
 package izumi.cw4j;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import izumi.cw4j.bean.NetRoomTask;
 import izumi.cw4j.bean.NetRoomMember;
 import izumi.cw4j.bean.NetMessage;
 import izumi.cw4j.bean.NetSendMessage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by izumi on 2016/08/01.
@@ -20,7 +25,8 @@ public class ChatworkRoom {
         this.roomId = roomId;
     }
 
-    /**
+
+     /**
      * この部屋のメンバ一覧を取得します。
      * @return
      */
@@ -34,7 +40,9 @@ public class ChatworkRoom {
      * @return
      */
     public NetSendMessage sendMessage(String message) throws IOException {
-        return new ObjectMapper().readValue(ChatworkConnection.post("https://api.chatwork.com/v1/rooms/" + this.roomId + "/messages", token, message), NetSendMessage.class);
+        Map<String, String> msgMap = new HashMap<>();
+        msgMap.put("body", message);
+        return new ObjectMapper().readValue(ChatworkConnection.post("https://api.chatwork.com/v1/rooms/" + this.roomId + "/messages", token, msgMap), NetSendMessage.class);
     }
 
     /**

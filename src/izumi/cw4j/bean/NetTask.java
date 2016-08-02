@@ -1,16 +1,12 @@
 package izumi.cw4j.bean;
 
-import izumi.cw4j.Chatwork4j;
-
-import java.util.List;
-
 /**
  * Created by izumi on 2016/08/02.
  */
 public class NetTask {
 
     private int task_id;
-    private NetRoom room;
+    private NetRoomTask room;
     private NetAssigner assigned_by_account;
     private int message_id;
     private String body;
@@ -25,11 +21,11 @@ public class NetTask {
         this.task_id = task_id;
     }
 
-    public NetRoom getRoom() {
+    public NetRoomTask getRoom() {
         return room;
     }
 
-    public void setRoom(NetRoom room) {
+    public void setRoom(NetRoomTask room) {
         this.room = room;
     }
 

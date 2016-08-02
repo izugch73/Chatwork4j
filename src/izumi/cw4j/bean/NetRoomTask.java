@@ -3,7 +3,7 @@ package izumi.cw4j.bean;
 /**
  * Created by izumi on 2016/08/02.
  */
-public class NetRoom {
+public class NetRoomTask {
 
     private int room_id;
     private String name;
@@ -35,7 +35,7 @@ public class NetRoom {
 
     @Override
     public String toString() {
-        return "NetRoom{" +
+        return "NetRoomTask{" +
                 "room_id=" + room_id +
                 ", name='" + name + '\'' +
                 ", icon_path='" + icon_path + '\'' +

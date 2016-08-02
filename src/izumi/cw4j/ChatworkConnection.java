@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * Created by izumi on 2016/08/01.
@@ -38,7 +39,7 @@ public class ChatworkConnection {
 
     }
 
-    protected static  String post(String urlString, String token, String message){
+    protected static  String post(String urlString, String token, Map<String,String> header){
 
         try {
             URL e = new URL(urlString);
@@ -46,9 +47,17 @@ public class ChatworkConnection {
             uc.setDoOutput(true);
             uc.setRequestProperty("X-ChatWorkToken", token);
             OutputStream os = uc.getOutputStream();
-            String postStr = "body=" + URLEncoder.encode(message, "UTF-8");
             PrintStream ps = new PrintStream(os);
-            ps.print(postStr);
+
+            header.forEach((key, val) -> {
+                try {
+                    String postStr = key + "=" + URLEncoder.encode(val, "UTF-8");
+                    ps.print(postStr);
+                } catch(UnsupportedEncodingException uee) {
+                    //
+                }
+            });
+
             ps.close();
             InputStream is = uc.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));

@@ -4,10 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import izumi.cw4j.bean.*;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Chatwork4j {
 
-    public static ChatworkRoom createRoom(String token, int roomId){
+    /**
+     * チャットルームを取得します。
+     * @param token
+     * @param roomId
+     * @return
+     */
+    public static ChatworkRoom getRoom(String token, int roomId){
         return new ChatworkRoom(token, roomId);
     }
 
@@ -71,6 +78,22 @@ public class Chatwork4j {
         return new ObjectMapper().readValue(ChatworkConnection.get("https://api.chatwork.com/v1/contacts", token), NetContact[].class);
     }
 
+
+    /**
+     *
+     * @param name 部屋名。必須
+     * @param members_admin_ids 管理者となるユーザのアカウントIDリスト。必須
+     * @param members_member_ids 通常メンバとなるユーザのアカウントIDリスト。Null可
+     * @param members_readonly_ids 閲覧のみメンバとなるユーザのアカウントIDリスト。Null可
+     * @param description 部屋の説明。Null可
+     * @param icon 部屋アイコン。Null可
+     * @return
+     */
+    public int createRoom(String name, List<Integer> members_admin_ids, List<Integer> members_member_ids, List<Integer> members_readonly_ids, String description, ChatworkIcon icon){
+        return 0;
+    }
+
+
     /**
      * タスク取得用列挙型
      */
@@ -88,6 +111,16 @@ public class Chatwork4j {
         public String getValue(){
             return this.status;
         }
+    }
+
+    /**
+     * アイコン用列挙型
+     */
+    public enum ChatworkIcon{
+
+        group, check, document, meeting, event, project, business, study, security,
+        star, idea, heart, magcup, beer, music, sports, travel
+
     }
 
 
