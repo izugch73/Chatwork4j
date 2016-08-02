@@ -3,7 +3,7 @@ package izumi.cw4j.bean;
 /**
  * Created by izumi on 2016/08/01.
  */
-public class NetMember {
+public class NetRoomMember {
 
     private int account_id;
     private String role;
@@ -80,7 +80,7 @@ public class NetMember {
 
     @Override
     public String toString() {
-        return "NetMember{" +
+        return "NetRoomMember{" +
                 "account_id=" + account_id +
                 ", role='" + role + '\'' +
                 ", name='" + name + '\'' +

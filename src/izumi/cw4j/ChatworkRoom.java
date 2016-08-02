@@ -1,7 +1,7 @@
 package izumi.cw4j;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import izumi.cw4j.bean.NetMember;
+import izumi.cw4j.bean.NetRoomMember;
 import izumi.cw4j.bean.NetMessage;
 import izumi.cw4j.bean.NetSendMessage;
 
@@ -24,8 +24,8 @@ public class ChatworkRoom {
      * この部屋のメンバ一覧を取得します。
      * @return
      */
-    public NetMember[] getMembers()throws IOException{
-        return new ObjectMapper().readValue(ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token), NetMember[].class);
+    public NetRoomMember[] getMembers()throws IOException{
+        return new ObjectMapper().readValue(ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token), NetRoomMember[].class);
     }
 
     /**

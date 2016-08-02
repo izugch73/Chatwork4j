@@ -3,7 +3,7 @@ package izumi.cw4j.bean;
 /**
  * Created by izumi on 2016/08/01.
  */
-public class NetMyInfo {
+public class NetMe {
     private int account_id;
     private int room_id;
     private String name;
@@ -170,7 +170,7 @@ public class NetMyInfo {
 
     @Override
     public String toString() {
-        return "NetMyInfo{" +
+        return "NetMe{" +
                 "account_id=" + account_id +
                 ", room_id=" + room_id +
                 ", name='" + name + '\'' +
