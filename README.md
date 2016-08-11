@@ -10,8 +10,8 @@ A Chatwork4j is Chatwork wrapper for Java.
 
 # Get there!
 + Jackson-core
- + https://github.com/FasterXML/jackson-core
+ + https://github.com/FasterXML/jackson-core/wiki#download
 + Jackson-databind
- + https://github.com/FasterXML/jackson-databind
+ + https://github.com/FasterXML/jackson-databind/wiki#download
 + Jackson-annotation
- + https://github.com/FasterXML/jackson-annotations
+ + https://github.com/FasterXML/jackson-annotations/wiki#download
