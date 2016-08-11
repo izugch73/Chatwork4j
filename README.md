@@ -7,3 +7,11 @@ A Chatwork4j is Chatwork wrapper for Java.
 + Jackson-annotations (2.7.x higher)
 
 ... However I don't know where these libraries is used! :)
+
+# Get there!
++ Jackson-core
+ + https://github.com/FasterXML/jackson-core
++ Jackson-databind
+ + https://github.com/FasterXML/jackson-databind
++ Jackson-annotation
+ + https://github.com/FasterXML/jackson-annotations
