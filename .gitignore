@@ -16,3 +16,6 @@ Main.java
 *.idea*
 *.iml*
 *netatmo*
+
+.gradle/
+build/
