@@ -14,3 +14,5 @@ src/main/java/test/
 build/
 lib/
 out/
+
+test.properties
