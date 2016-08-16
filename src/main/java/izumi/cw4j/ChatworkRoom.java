@@ -36,9 +36,7 @@ public class ChatworkRoom {
      * @return
      */
     public NetRoomMember[] getMembers()throws IOException{
-        String str = ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token);
-        System.out.println(str);
-        return new ObjectMapper().readValue(str, NetRoomMember[].class);
+        return new ObjectMapper().readValue(ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token), NetRoomMember[].class);
     }
 
     /**
