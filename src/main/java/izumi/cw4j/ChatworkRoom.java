@@ -20,6 +20,11 @@ public class ChatworkRoom {
     private String token;
     private int roomId;
 
+    private static final String TO_MESSAGE_FORMAT = "[To:%s]\n%s";
+    private static final String REPLY_MESSAGE_FORMAT = "[rp aid=%s to=%s-%s]\n%s";
+    private static final String INFO_MESSAGE_FORMAT = "[info]%s[/info]";
+    private static final String INFO_MESSAGE_FORMAT_WITH_TITLE = "[info][title]%s[/title]%s[/info]";
+
     protected ChatworkRoom(String token, int roomId){
         this.token = token;
         this.roomId = roomId;
@@ -31,18 +36,43 @@ public class ChatworkRoom {
      * @return
      */
     public NetRoomMember[] getMembers()throws IOException{
-        return new ObjectMapper().readValue(ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token), NetRoomMember[].class);
+        String str = ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token);
+        System.out.println(str);
+        return new ObjectMapper().readValue(str, NetRoomMember[].class);
     }
 
     /**
      * この部屋にメッセージを送信します。
      * @param message
      * @return
+     * @throws IOException
      */
     public NetSendMessage sendMessage(String message) throws IOException {
         Map<String, String> msgMap = new HashMap<>();
         msgMap.put("body", message);
         return new ObjectMapper().readValue(ChatworkConnection.post("https://api.chatwork.com/v1/rooms/" + this.roomId + "/messages", token, msgMap), NetSendMessage.class);
+    }
+
+    /**
+     * この部屋にInformationとしてタイトル付きのメッセージを送信します。
+     * @param title
+     * @param message
+     * @return
+     * @throws IOException
+     */
+    public NetSendMessage sendInformationMessage(String title, String message) throws IOException {
+        String infoMsg = title == null ? String.format(INFO_MESSAGE_FORMAT, message) : String.format(INFO_MESSAGE_FORMAT_WITH_TITLE, title, message);
+        return sendMessage(infoMsg);
+    }
+
+    /**
+     * この部屋にInformationとしてメッセージを送信します。
+     * @param message
+     * @return
+     * @throws IOException
+     */
+    public NetSendMessage sendInformationMessage(String message) throws IOException {
+        return sendInformationMessage(null, message);
     }
 
     /**
