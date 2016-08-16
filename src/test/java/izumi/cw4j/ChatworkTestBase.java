@@ -30,4 +30,7 @@ public class ChatworkTestBase extends TestCase {
         chatworkAPI = p.getProperty("chatworkAPI");
         roomId = Integer.parseInt(p.getProperty("roomId"));
     }
+
+    // to avoid no tests found exception
+    public void testDummy() {}
 }
