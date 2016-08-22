@@ -7,10 +7,7 @@ import izumi.cw4j.bean.NetMessage;
 import izumi.cw4j.bean.NetSendMessage;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by izumi on 2016/08/01.
@@ -85,6 +82,30 @@ public class ChatworkRoom {
         if( json.isEmpty() ) return new NetMessage[]{};
         return new ObjectMapper().readValue( json, NetMessage[].class);
     }
+
+    /**
+     * 自分へのリプライ付きのメッセージ一覧を取得します。未読のみか、未読にかかわらず100件取得かを選択できます。
+     * @param isUnreadOnly true:未読メッセージのみ取得<br/>false:未読かどうかにかかわらず最新から100件取得
+     * @param myAccountId このIDへのリプライもしくはToを検索します
+     * @return 未読もしくは過去ログが全くがない場合、空配列を返します。
+     * @throws IOException
+     */
+    public NetMessage[] getReplyOrToMessages(boolean isUnreadOnly, int myAccountId) throws IOException {
+        NetMessage[] allMsg = getMessages(isUnreadOnly);
+
+        List<NetMessage> toList = new ArrayList<>();
+        for(NetMessage msg : allMsg) {
+            if( msg.getBody().indexOf("[To:"+ myAccountId + "]") != -1  ||
+                    msg.getBody().indexOf("[rp aid=" + myAccountId ) != -1 ){
+                toList.add(msg);
+            }
+        }
+
+        return toList.toArray(new NetMessage[toList.size()]);
+
+    }
+
+
 
     /**
      * ルームIDを返します。
