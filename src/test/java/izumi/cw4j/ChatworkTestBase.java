@@ -7,7 +7,7 @@ import java.util.Properties;
 
 /**
  * base class to prepare to call the Chatwork API before the test
- *
+ * <p>
  * Created by dys on 2016/08/16.
  */
 public class ChatworkTestBase extends TestCase {
@@ -32,5 +32,6 @@ public class ChatworkTestBase extends TestCase {
     }
 
     // to avoid no tests found exception
-    public void testDummy() {}
+    public void testDummy() {
+    }
 }
