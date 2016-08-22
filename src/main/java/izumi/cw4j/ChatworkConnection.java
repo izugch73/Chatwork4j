@@ -12,7 +12,7 @@ import java.util.Map;
 public class ChatworkConnection {
 
 
-    protected static String get(String urlString, String token){
+    protected static String get(String urlString, String token) {
 
         try {
             URL e = new URL(urlString);
@@ -24,7 +24,7 @@ public class ChatworkConnection {
 
             String s;
             String str = "";
-            for(; (s = reader.readLine()) != null; str = str + s + "\n") {
+            for (; (s = reader.readLine()) != null; str = str + s + "\n") {
                 System.out.println(s);
             }
 
@@ -39,7 +39,7 @@ public class ChatworkConnection {
 
     }
 
-    protected static  String post(String urlString, String token, Map<String,String> header){
+    protected static String post(String urlString, String token, Map<String, String> header) {
 
         try {
             URL e = new URL(urlString);
@@ -53,7 +53,7 @@ public class ChatworkConnection {
                 try {
                     String postStr = key + "=" + URLEncoder.encode(val, "UTF-8");
                     ps.print(postStr);
-                } catch(UnsupportedEncodingException uee) {
+                } catch (UnsupportedEncodingException uee) {
                     //
                 }
             });
@@ -64,7 +64,7 @@ public class ChatworkConnection {
 
             String s;
             String str = "";
-            for(; (s = reader.readLine()) != null; str = str + s + "\n") {
+            for (; (s = reader.readLine()) != null; str = str + s + "\n") {
                 System.out.println(s);
             }
 

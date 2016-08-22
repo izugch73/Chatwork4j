@@ -1,5 +1,6 @@
 package izumi.cw4j;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import izumi.cw4j.bean.NetRoomTask;
 import izumi.cw4j.bean.NetRoomMember;
@@ -8,6 +9,7 @@ import izumi.cw4j.bean.NetSendMessage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by izumi on 2016/08/01.
@@ -22,22 +24,27 @@ public class ChatworkRoom {
     private static final String INFO_MESSAGE_FORMAT = "[info]%s[/info]";
     private static final String INFO_MESSAGE_FORMAT_WITH_TITLE = "[info][title]%s[/title]%s[/info]";
 
-    protected ChatworkRoom(String token, int roomId){
+    protected ChatworkRoom(String token, int roomId) {
         this.token = token;
         this.roomId = roomId;
     }
 
 
-     /**
+    /**
      * この部屋のメンバ一覧を取得します。
+     *
      * @return
      */
-    public NetRoomMember[] getMembers()throws IOException{
-        return new ObjectMapper().readValue(ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token), NetRoomMember[].class);
+    public List<NetRoomMember> getMembers() throws IOException {
+        String json = ChatworkConnection.get("https://api.chatwork.com/v1/rooms/" + this.roomId + "/members", token);
+        if (json.isEmpty()) return Collections.emptyList();
+        return new ObjectMapper().readValue(json, new TypeReference<List<NetRoomMember>>() {
+        });
     }
 
     /**
      * この部屋にメッセージを送信します。
+     *
      * @param message
      * @return
      * @throws IOException
@@ -45,11 +52,13 @@ public class ChatworkRoom {
     public NetSendMessage sendMessage(String message) throws IOException {
         Map<String, String> msgMap = new HashMap<>();
         msgMap.put("body", message);
-        return new ObjectMapper().readValue(ChatworkConnection.post("https://api.chatwork.com/v1/rooms/" + this.roomId + "/messages", token, msgMap), NetSendMessage.class);
+        String json = ChatworkConnection.post("https://api.chatwork.com/v1/rooms/" + this.roomId + "/messages", token, msgMap);
+        return new ObjectMapper().readValue(json, NetSendMessage.class);
     }
 
     /**
      * この部屋にInformationとしてタイトル付きのメッセージを送信します。
+     *
      * @param title
      * @param message
      * @return
@@ -62,6 +71,7 @@ public class ChatworkRoom {
 
     /**
      * この部屋にInformationとしてメッセージを送信します。
+     *
      * @param message
      * @return
      * @throws IOException
@@ -72,43 +82,37 @@ public class ChatworkRoom {
 
     /**
      * メッセージ一覧を取得します。未読のみか、未読にかかわらず100件取得かを選択できます。
+     *
      * @param isUnreadOnly true:未読メッセージのみ取得<br/>false:未読かどうかにかかわらず最新から100件取得
      * @return 未読もしくは過去ログが全くがない場合、空配列を返します。
      * @throws IOException
      */
-    public NetMessage[] getMessages(boolean isUnreadOnly) throws IOException {
+    public List<NetMessage> getMessages(boolean isUnreadOnly) throws IOException {
         String url = "https://api.chatwork.com/v1/rooms/" + this.roomId + "/messages?force=" + (isUnreadOnly ? 0 : 1);
-        String json = ChatworkConnection.get(url,token);
-        if( json.isEmpty() ) return new NetMessage[]{};
-        return new ObjectMapper().readValue( json, NetMessage[].class);
+        String json = ChatworkConnection.get(url, token);
+        if (json.isEmpty()) return Collections.emptyList();
+        return new ObjectMapper().readValue(json, new TypeReference<List<NetMessage>>() {
+        });
     }
 
     /**
      * 自分へのリプライ付きのメッセージ一覧を取得します。未読のみか、未読にかかわらず100件取得かを選択できます。
+     *
      * @param isUnreadOnly true:未読メッセージのみ取得<br/>false:未読かどうかにかかわらず最新から100件取得
-     * @param myAccountId このIDへのリプライもしくはToを検索します
+     * @param myAccountId  このIDへのリプライもしくはToを検索します
      * @return 未読もしくは過去ログが全くがない場合、空配列を返します。
      * @throws IOException
      */
-    public NetMessage[] getReplyOrToMessages(boolean isUnreadOnly, int myAccountId) throws IOException {
-        NetMessage[] allMsg = getMessages(isUnreadOnly);
-
-        List<NetMessage> toList = new ArrayList<>();
-        for(NetMessage msg : allMsg) {
-            if( msg.getBody().indexOf("[To:"+ myAccountId + "]") != -1  ||
-                    msg.getBody().indexOf("[rp aid=" + myAccountId ) != -1 ){
-                toList.add(msg);
-            }
-        }
-
-        return toList.toArray(new NetMessage[toList.size()]);
-
+    public List<NetMessage> getReplyOrToMessages(boolean isUnreadOnly, int myAccountId) throws IOException {
+        return getMessages(isUnreadOnly).stream()
+                .filter(m -> m.getBody().contains("[To:" + myAccountId + "]") ||
+                        m.getBody().contains("[rp aid=" + myAccountId))
+                .collect(Collectors.toList());
     }
-
-
 
     /**
      * ルームIDを返します。
+     *
      * @return
      */
     public int getRoomId() {
